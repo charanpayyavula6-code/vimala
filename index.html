@@ -1,0 +1,458 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vimala Enterprises - Professional Cine Equipment Rental. Rent high-quality cameras, lights, lenses and accessories for your film production.">
+    <title>Vimala Enterprises - Cine Equipment Rental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="admin-login-modal" id="admin-login-modal">
+        <div class="admin-login-content">
+            <div class="admin-login-header">
+                <h2>Admin Login</h2>
+                <p>Enter your credentials to access admin panel</p>
+            </div>
+            <div class="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-username">Username</label>
+                    <input type="text" id="admin-username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" placeholder="Enter password">
+                </div>
+                <div class="admin-login-error" id="admin-login-error">
+                    Invalid username or password. Try again.
+                </div>
+                <button class="admin-login-btn" id="admin-login-submit">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo" id="home-link">
+                <div class="logo-icon">V</div>
+                <div class="logo-text">Vimala<span>Enterprises</span></div>
+            </div>
+
+            <div class="nav-links" id="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#" class="equipment-link" data-filter="all">Equipment</a>
+                <a href="#" class="equipment-link" data-filter="camera">Cameras</a>
+                <a href="#" class="equipment-link" data-filter="light">Lights</a>
+                <a href="#" class="cart-icon" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+
+                <!-- User Login Button and Profile -->
+                <div class="user-profile" id="user-profile">
+                    <button class="login-btn" id="login-button">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="dropdown-header" id="profile-header">
+                            <h4>Welcome Guest!</h4>
+                            <p>Login to access your bookings</p>
+                        </div>
+                        <div class="dropdown-menu" id="profile-menu">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" id="admin-toggle">Admin</a>
+            </div>
+
+            <div class="hamburger-menu" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Image Scroller -->
+    <div class="image-scroller-container" id="image-scroller-container">
+        <div class="image-scroller" id="image-scroller">
+            <!-- Images will be loaded via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Professional Cine Equipment Rental</h1>
+            <p>Rent high-quality cameras, lighting equipment and more for your film production needs. Flexible rental periods and competitive prices.</p>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for cameras, lights, accessories...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Equipment Section -->
+        <section id="equipment-section">
+            <div class="section-title">
+                <h2>Available Equipment</h2>
+                <p>Browse our extensive collection of professional filmmaking equipment available for rent</p>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Equipment</button>
+                <button class="filter-btn" data-filter="camera">Cameras</button>
+                <button class="filter-btn" data-filter="light">Lighting</button>
+                <button class="filter-btn" data-filter="lens">Lenses</button>
+                <button class="filter-btn" data-filter="accessory">Accessories</button>
+            </div>
+
+            <div class="equipment-grid" id="equipment-container">
+                <!-- Equipment cards will be loaded via JavaScript -->
+            </div>
+        </section>
+
+        <!-- User Bookings Section (Visible when logged in) -->
+        <section id="user-bookings-section" style="display: none;">
+            <div class="section-title">
+                <h2>My Bookings</h2>
+                <p>View and manage your equipment rental bookings</p>
+            </div>
+
+            <div class="user-bookings" id="user-bookings-container">
+                <!-- User bookings will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Rental Cart</h2>
+                <button class="close-modal" id="close-cart">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="cart-items">
+                    <thead>
+                        <tr>
+                            <th>Equipment</th>
+                            <th>Price</th>
+                            <th>Rental Days</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                        <!-- Cart items will be loaded via JavaScript -->
+                    </tbody>
+                </table>
+                <p id="empty-cart-message" style="text-align: center; padding: 30px; color: #666;">Your cart is empty</p>
+
+                <!-- Customer Details Form -->
+                <div id="customer-details-form" style="display: none;">
+                    <h3 style="margin: 30px 0 20px; color: var(--secondary-color);">Customer Details</h3>
+                    <div class="customer-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customer-name">Full Name *</label>
+                                <input type="text" id="customer-name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-email">Email Address *</label>
+                                <input type="email" id="customer-email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customer-phone">Phone Number *</label>
+                                <input type="tel" id="customer-phone" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-company">Production Company</label>
+                                <input type="text" id="customer-company" placeholder="Enter production company name">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="project-type">Project Type *</label>
+                                <select id="project-type" required>
+                                    <option value="">Select project type</option>
+                                    <option value="feature-film">Feature Film</option>
+                                    <option value="short-film">Short Film</option>
+                                    <option value="documentary">Documentary</option>
+                                    <option value="commercial">Commercial/Advertisement</option>
+                                    <option value="music-video">Music Video</option>
+                                    <option value="corporate">Corporate Video</option>
+                                    <option value="wedding">Wedding Film</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="shoot-date">Shoot Date *</label>
+                                <input type="date" id="shoot-date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="special-requirements">Special Requirements</label>
+                            <textarea id="special-requirements" placeholder="Any special requirements or additional notes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <h3>Total: <span class="total-price" id="cart-total">&#8377;0</span></h3>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="checkout-btn" id="proceed-to-details" style="background-color: var(--secondary-color);">Proceed to Booking</button>
+                    <button class="checkout-btn" id="checkout-btn" style="display: none;">Complete Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="modal" id="receipt-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Booking Receipt</h2>
+                <button class="close-modal" id="close-receipt">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-container" id="receipt-content">
+                    <!-- Receipt content will be loaded here -->
+                </div>
+                <div class="receipt-actions">
+                    <button class="submit-btn" id="print-receipt">
+                        <i class="fas fa-print"></i> Print Receipt
+                    </button>
+                    <button class="submit-btn" id="download-receipt" style="background-color: var(--secondary-color);">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-header">
+            <h2>Admin Dashboard</h2>
+            <button class="close-modal" id="close-admin">&times;</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="add-equipment">Add Equipment</button>
+            <button class="admin-tab" data-tab="manage-equipment">Manage Equipment</button>
+            <button class="admin-tab" data-tab="gallery-management">Gallery Management</button>
+            <button class="admin-tab" data-tab="bookings-dashboard">Bookings Dashboard</button>
+            <button class="admin-tab" data-tab="contact-info">Contact Info</button>
+        </div>
+
+        <div class="admin-content">
+            <div class="tab-content active" id="add-equipment">
+                <h3>Add New Equipment</h3>
+                <form class="admin-form" id="add-equipment-form">
+                    <div class="form-group">
+                        <label for="equipment-name">Equipment Name</label>
+                        <input type="text" id="equipment-name" placeholder="e.g., Sony FX6 Cinema Camera" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipment-type">Equipment Type</label>
+                        <select id="equipment-type" required>
+                            <option value="">Select Type</option>
+                            <option value="camera">Camera</option>
+                            <option value="light">Lighting</option>
+                            <option value="lens">Lens</option>
+                            <option value="accessory">Accessory</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipment-price">Daily Rental Price (&#8377;)</label>
+                        <input type="number" id="equipment-price" min="1" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Equipment Image</label>
+                        <div class="image-upload-container" id="image-upload-container">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload or drag and drop</p>
+                            <div class="upload-btn">
+                                <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                                <label for="image-upload" style="cursor: pointer;">Choose Image</label>
+                            </div>
+                            <div id="image-preview"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipment-description">Description</label>
+                        <textarea id="equipment-description" placeholder="Describe the equipment features and specifications"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipment-stock">Available Units</label>
+                        <input type="number" id="equipment-stock" min="1" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Add Equipment</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="manage-equipment">
+                <h3>Manage Equipment</h3>
+                <div id="admin-equipment-list">
+                    <!-- Admin equipment list will be loaded via JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="gallery-management">
+                <h3>Gallery Management</h3>
+                <p>Upload multiple images for the scrolling gallery.</p>
+                <div class="gallery-upload-container" id="gallery-upload-container">
+                    <i class="fas fa-images"></i>
+                    <p>Upload multiple images for the scrolling gallery</p>
+                    <div class="gallery-upload-btn">
+                        <input type="file" id="gallery-upload" accept="image/*" multiple style="display: none;">
+                        <label for="gallery-upload" style="cursor: pointer;">Select Multiple Images</label>
+                    </div>
+                    <div id="gallery-preview" class="gallery-preview"></div>
+                </div>
+                <div id="current-gallery">
+                    <h4>Current Gallery Images</h4>
+                    <div id="gallery-images-list" class="gallery-preview"></div>
+                </div>
+                <button class="submit-btn" id="save-gallery" style="margin-top: 20px;">Save Gallery Changes</button>
+            </div>
+
+            <div class="tab-content" id="bookings-dashboard">
+                <h3>Bookings Dashboard</h3>
+                <div class="admin-search-container">
+                    <input type="text" id="admin-search" class="admin-search" placeholder="Search by customer name, email, booking ID...">
+                    <button class="submit-btn" id="admin-search-btn">Search</button>
+                </div>
+                <div class="admin-filters">
+                    <select id="filter-status" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <select id="filter-date" class="filter-select">
+                        <option value="">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                    <select id="filter-project" class="filter-select">
+                        <option value="">All Projects</option>
+                        <option value="feature-film">Feature Film</option>
+                        <option value="short-film">Short Film</option>
+                        <option value="documentary">Documentary</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                    <button class="submit-btn" id="reset-filters" style="background-color: var(--secondary-color); padding: 8px 15px;">Reset Filters</button>
+                </div>
+                <div id="bookings-container"></div>
+            </div>
+
+            <div class="tab-content" id="contact-info">
+                <h3>Manage Contact Information</h3>
+                <div class="contact-admin">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-address">Address</label>
+                                <input type="text" id="contact-address" placeholder="Enter address">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-phone">Phone Number</label>
+                                <input type="text" id="contact-phone" placeholder="Enter phone number">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-email">Email Address</label>
+                                <input type="email" id="contact-email" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-hours">Business Hours</label>
+                                <input type="text" id="contact-hours" placeholder="e.g., Mon-Fri 9AM-6PM">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Update Contact Info</button>
+                    </form>
+                    <div style="margin-top: 30px;">
+                        <h4>Current Contact Information</h4>
+                        <div id="current-contact-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Vimala Enterprises</h3>
+                    <p id="footer-address">123 Film Street, Mumbai, India</p>
+                    <p id="footer-phone"><i class="fas fa-phone"></i> +91 98765 43210</p>
+                    <p id="footer-email"><i class="fas fa-envelope"></i> info@vimalaenterprises.com</p>
+                    <p id="footer-hours"><i class="fas fa-clock"></i> Mon-Sat: 9AM-7PM</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <a href="#" class="footer-link" data-filter="all">All Equipment</a>
+                    <a href="#" class="footer-link" data-filter="camera">Cameras</a>
+                    <a href="#" class="footer-link" data-filter="light">Lighting</a>
+                    <a href="#" class="footer-link" data-filter="lens">Lenses</a>
+                    <a href="#" class="footer-link" data-filter="accessory">Accessories</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Our Services</h3>
+                    <a href="#">Equipment Rental</a>
+                    <a href="#">On-Site Support</a>
+                    <a href="#">Delivery &amp; Pickup</a>
+                    <a href="#">Equipment Maintenance</a>
+                    <a href="#">Consultation</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Rental Info</h3>
+                    <a href="#">How to Rent</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">Delivery &amp; Pickup</a>
+                    <a href="#">Terms &amp; Conditions</a>
+                    <a href="#">FAQ</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Vimala Enterprises. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
